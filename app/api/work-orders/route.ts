@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { trade, audioPath } = await request.json()
+    const { trade, template, audioPath } = await request.json()
     if (!trade || !audioPath) return NextResponse.json({ error: 'trade and audioPath required' }, { status: 400 })
 
     // Check plan limits
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     // Insert work order
     const { data: wo, error: woErr } = await supabase
       .from('work_orders')
-      .insert({ user_id: user.id, trade, status: 'draft', audio_url: audioPath })
+      .insert({ user_id: user.id, trade, template: template ?? null, status: 'draft', audio_url: audioPath })
       .select('id')
       .single()
 

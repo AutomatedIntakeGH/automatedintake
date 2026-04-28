@@ -68,6 +68,7 @@ export type Database = {
           audio_url: string | null
           transcript: string | null
           raw_extraction: Record<string, unknown> | null
+          template: string | null
           created_at: string
           updated_at: string
         }
@@ -87,6 +88,7 @@ export type Database = {
           audio_url?: string | null
           transcript?: string | null
           raw_extraction?: Record<string, unknown> | null
+          template?: string | null
         }
         Update: {
           trade?: string
@@ -102,6 +104,7 @@ export type Database = {
           audio_url?: string | null
           transcript?: string | null
           raw_extraction?: Record<string, unknown> | null
+          template?: string | null
           updated_at?: string
         }
         Relationships: []
