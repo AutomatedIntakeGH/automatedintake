@@ -26,7 +26,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
     .eq('id', user.id)
     .single()
 
-  if (!profile?.trade) redirect('/onboarding')
+  if (!profile?.onboarded) redirect('/onboarding')
 
   const plan        = (profile.plan ?? 'free') as Plan
   const usedCount   = profile.monthly_wo_count ?? 0

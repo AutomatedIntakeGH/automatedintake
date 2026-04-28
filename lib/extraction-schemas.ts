@@ -8,6 +8,9 @@ const TRADE_LABELS: Record<Trade, string> = {
   roofing: 'roofing',
   landscaping: 'landscaping',
   contractor: 'general contracting',
+  home_services: 'home services',
+  receptionist: 'front office / reception',
+  medical: 'medical / dental',
 }
 
 const TRADE_ROLES: Record<Trade, string> = {
@@ -18,6 +21,9 @@ const TRADE_ROLES: Record<Trade, string> = {
   roofing: 'roofing contractor',
   landscaping: 'landscaper',
   contractor: 'general contractor',
+  home_services: 'home services technician',
+  receptionist: 'receptionist',
+  medical: 'intake coordinator',
 }
 
 const TRADE_SCHEMAS: Record<Trade, object> = {
@@ -118,6 +124,44 @@ const TRADE_SCHEMAS: Record<Trade, object> = {
     follow_up_questions: [],
     tech_notes: '',
     sentiment: 'positive|neutral|frustrated',
+  },
+  home_services: {
+    customer: { name: '', phone: '', email: '' },
+    property: { address: '', type: 'residential|commercial' },
+    project_type: '',
+    concerns: [
+      { description: '', priority: 'high|medium|low', area: '' },
+    ],
+    estimated_sqft: null,
+    permit_likely_required: null,
+    follow_up_questions: [],
+    tech_notes: '',
+    sentiment: 'positive|neutral|frustrated',
+  },
+  receptionist: {
+    caller: { name: '', phone: '', email: '' },
+    purpose: '',
+    message: '',
+    concerns: [
+      { description: '', priority: 'urgent|standard|low' },
+    ],
+    action_required: '',
+    follow_up_questions: [],
+    notes: '',
+    sentiment: 'positive|neutral|frustrated',
+  },
+  medical: {
+    patient: { name: '', phone: '', dob: '', insurance: '' },
+    chief_complaint: '',
+    symptoms: [],
+    duration: '',
+    concerns: [
+      { description: '', priority: 'urgent|standard|routine' },
+    ],
+    medications_mentioned: [],
+    follow_up_questions: [],
+    intake_notes: '',
+    sentiment: 'positive|neutral|anxious',
   },
 }
 

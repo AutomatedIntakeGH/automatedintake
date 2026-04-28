@@ -1,4 +1,4 @@
-export type Trade = 'auto' | 'hvac' | 'plumbing' | 'electrical' | 'roofing' | 'landscaping' | 'contractor'
+export type Trade = 'auto' | 'hvac' | 'plumbing' | 'electrical' | 'roofing' | 'landscaping' | 'contractor' | 'home_services' | 'receptionist' | 'medical'
 export type Plan = 'free' | 'solo' | 'pro' | 'shop' | 'enterprise'
 export type WOStatus = 'draft' | 'final' | 'sent' | 'archived'
 
@@ -13,6 +13,8 @@ export type Database = {
           shop_name: string | null
           trade: Trade | null
           plan: Plan
+          onboarded: boolean
+          default_template: string
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           monthly_wo_count: number
@@ -26,6 +28,8 @@ export type Database = {
           shop_name?: string | null
           trade?: Trade | null
           plan?: Plan
+          onboarded?: boolean
+          default_template?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           monthly_wo_count?: number
@@ -38,6 +42,8 @@ export type Database = {
           shop_name?: string | null
           trade?: Trade | null
           plan?: Plan
+          onboarded?: boolean
+          default_template?: string
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           monthly_wo_count?: number

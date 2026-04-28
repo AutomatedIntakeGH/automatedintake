@@ -40,11 +40,11 @@ export async function GET(request: NextRequest) {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('trade')
+    .select('onboarded')
     .eq('id', user.id)
     .single()
 
-  if (profile?.trade) {
+  if (profile?.onboarded) {
     return NextResponse.redirect(`${origin}/dashboard`)
   }
 

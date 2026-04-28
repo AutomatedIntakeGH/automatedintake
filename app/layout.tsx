@@ -1,16 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Barlow, Barlow_Condensed } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const barlow = Barlow({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "900"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
   subsets: ["latin"],
+  weight: ["600", "700", "900"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -20,18 +24,14 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "AutoIntake",
+    title: "AI Intake",
   },
-  formatDetection: {
-    telephone: false,
-  },
-  icons: {
-    apple: "/icon-192.png",
-  },
+  formatDetection: { telephone: false },
+  icons: { apple: "/icon-192.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#06B6D4",
+  themeColor: "#06D6A0",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -41,13 +41,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${barlow.variable} ${barlowCondensed.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         {children}
