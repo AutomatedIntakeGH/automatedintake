@@ -1,19 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { Recorder } from '@/components/recorder'
+import { TopBar } from '@/components/topbar'
 import Link from 'next/link'
 import { isAtLimit, PLAN_LIMITS } from '@/lib/plan-limits'
-import type { Plan } from '@/lib/types'
-
-const TRADE_LABELS: Record<string, string> = {
-  auto:        'Auto Repair',
-  hvac:        'HVAC',
-  plumbing:    'Plumbing',
-  electrical:  'Electrical',
-  roofing:     'Roofing',
-  landscaping: 'Landscaping',
-  contractor:  'General Contractor',
-}
+import type { Plan, Trade } from '@/lib/types'
 
 export default async function DashboardPage({ searchParams }: { searchParams: Promise<{ upgraded?: string }> }) {
   const supabase = await createClient()
@@ -28,72 +19,55 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
 
   if (!profile?.onboarded) redirect('/onboarding')
 
-  const plan        = (profile.plan ?? 'free') as Plan
-  const usedCount   = profile.monthly_wo_count ?? 0
-  const limit       = PLAN_LIMITS[plan]
-  const atLimit     = isAtLimit(plan, usedCount)
-  const params      = await searchParams
+  const plan         = (profile.plan ?? 'free') as Plan
+  const trade        = (profile.trade ?? 'auto') as Trade
+  const usedCount    = profile.monthly_wo_count ?? 0
+  const limit        = PLAN_LIMITS[plan]
+  const atLimit      = isAtLimit(plan, usedCount)
+  const params       = await searchParams
   const justUpgraded = params.upgraded === '1'
 
   return (
-    <div className="min-h-screen bg-[#0F172A] flex flex-col">
-      <header className="px-4 py-4 border-b border-slate-800 flex items-center justify-between">
-        <h1 className="text-white font-bold text-lg">
-          Automated<span className="text-[#06B6D4]">Intake</span>
-        </h1>
-        <div className="flex items-center gap-3">
-          <span className="text-slate-500 text-sm">{profile.trade ? (TRADE_LABELS[profile.trade] ?? profile.trade) : ''}</span>
-          {plan === 'free' && (
-            <Link href="/upgrade" className="text-xs px-2.5 py-1 rounded-full bg-[#06B6D4]/10 text-[#06B6D4] border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 transition-colors">
-              Upgrade
-            </Link>
-          )}
-        </div>
-      </header>
+    <div style={{ background: 'var(--bg-primary)', minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
 
-      <main className="flex-1 px-4 pt-8 pb-10 max-w-lg mx-auto w-full">
+      <TopBar userId={user.id} trade={trade} plan={plan} />
+
+      <main className="flex-1 px-4 pt-6 pb-10 max-w-lg mx-auto w-full">
 
         {justUpgraded && (
-          <div className="mb-6 bg-green-500/10 border border-green-500/30 rounded-xl px-4 py-3">
-            <p className="text-green-400 text-sm font-medium">You&apos;re on {plan.charAt(0).toUpperCase() + plan.slice(1)}. Unlimited work orders unlocked.</p>
+          <div className="mb-5 rounded-xl px-4 py-3" style={{ background: '#06D6A010', border: '1px solid #06D6A030' }}>
+            <p className="text-sm font-medium" style={{ color: 'var(--accent)' }}>
+              You&apos;re on {plan.charAt(0).toUpperCase() + plan.slice(1)}. Unlimited work orders unlocked.
+            </p>
           </div>
         )}
 
         {plan === 'free' && (
-          <div className="mb-6 bg-slate-800/50 rounded-xl px-4 py-3 flex items-center justify-between">
-            <p className="text-slate-400 text-sm">
-              <span className="text-white font-semibold">{usedCount}</span>
-              <span className="text-slate-500"> / {limit} free WOs this month</span>
+          <div className="mb-5 rounded-xl px-4 py-3 flex items-center justify-between" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-default)' }}>
+            <p className="text-sm" style={{ color: 'var(--text-sec)' }}>
+              <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{usedCount}</span>
+              <span style={{ color: 'var(--text-muted)' }}> / {limit} free WOs this month</span>
             </p>
-            <Link href="/upgrade" className="text-[#06B6D4] text-xs font-medium hover:underline">
+            <Link href="/upgrade" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>
               Go unlimited →
             </Link>
           </div>
         )}
 
         {atLimit ? (
-          <div className="space-y-4">
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl px-5 py-6 text-center space-y-3">
-              <p className="text-amber-400 font-semibold">You&apos;ve hit your free limit</p>
-              <p className="text-slate-400 text-sm">5 work orders used this month. Upgrade to keep going — no limits, ever.</p>
-              <Link
-                href="/upgrade"
-                className="block w-full py-3 bg-[#06B6D4] hover:bg-[#0891b2] rounded-xl text-white font-bold text-sm transition-colors"
-              >
-                Upgrade — from $29/mo
-              </Link>
-            </div>
+          <div className="rounded-2xl px-5 py-6 text-center space-y-3" style={{ background: '#F5A62310', border: '1px solid #F5A62330' }}>
+            <p className="font-semibold" style={{ color: '#F5A623' }}>You&apos;ve hit your free limit</p>
+            <p className="text-sm" style={{ color: 'var(--text-sec)' }}>5 work orders used this month. Upgrade to keep going — no limits, ever.</p>
+            <Link
+              href="/upgrade"
+              className="block w-full py-3 rounded-xl font-bold text-sm"
+              style={{ background: 'var(--accent)', color: 'var(--bg-primary)' }}
+            >
+              Upgrade — from $29/mo
+            </Link>
           </div>
         ) : (
-          <>
-            <div className="mb-6">
-              <h2 className="text-white text-xl font-semibold">New Work Order</h2>
-              <p className="text-slate-500 text-sm mt-1">
-                Tap Start, talk through the customer&apos;s concerns, then tap Stop.
-              </p>
-            </div>
-            <Recorder userId={user.id} trade={profile.trade ?? 'auto'} />
-          </>
+          <Recorder userId={user.id} trade={trade} />
         )}
 
       </main>
