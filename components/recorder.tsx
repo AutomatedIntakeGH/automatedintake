@@ -94,19 +94,27 @@ export function Recorder({ userId, trade }: RecorderProps) {
       return
     }
 
-    const { data: wo, error: woErr } = await supabase
-      .from('work_orders')
-      .insert({ user_id: userId, trade, status: 'draft', audio_url: path })
-      .select('id')
-      .single()
+    const woRes = await fetch('/api/work-orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trade, audioPath: path }),
+    })
 
-    if (woErr || !wo) {
+    if (!woRes.ok) {
+      let errMsg = 'Work order creation failed. Try again.'
+      try {
+        const err = await woRes.json()
+        if (err.error === 'limit_reached') {
+          errMsg = "You've hit your 5 free work orders this month. Tap to upgrade."
+        }
+      } catch {}
       setState('idle')
-      setError('Recording saved but work order creation failed. Try again.')
+      setError(errMsg)
       return
     }
 
-    router.push(`/work-orders/${wo.id}`)
+    const { id } = await woRes.json()
+    router.push(`/work-orders/${id}`)
   }
 
   if (state === 'idle') {
