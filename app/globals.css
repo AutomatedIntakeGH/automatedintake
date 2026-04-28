@@ -163,6 +163,27 @@
     animation: pulse-ring 2.2s ease-out 0.9s infinite;
   }
 
+  /* Recording button breathe */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.05); }
+  }
+
+  /* Processing message fade-in */
+  @keyframes msg-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-fade-in {
+    animation: msg-fade-in 0.35s ease-out forwards;
+  }
+
+  /* Generic spin */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   /* Processing text cycle */
   @keyframes fade-cycle {
     0%, 20%  { opacity: 1; }
