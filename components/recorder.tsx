@@ -10,6 +10,7 @@ type RecorderState = 'idle' | 'requesting' | 'recording' | 'uploading'
 interface RecorderProps {
   userId: string
   trade: string
+  template: string
 }
 
 function fmt(seconds: number) {
@@ -25,7 +26,7 @@ function bestMimeType() {
   return ''
 }
 
-export function Recorder({ userId, trade }: RecorderProps) {
+export function Recorder({ userId, trade, template }: RecorderProps) {
   const [state, setState] = useState<RecorderState>('idle')
   const [elapsed, setElapsed] = useState(0)
   const [error, setError] = useState('')
@@ -97,7 +98,7 @@ export function Recorder({ userId, trade }: RecorderProps) {
     const woRes = await fetch('/api/work-orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ trade, audioPath: path }),
+      body: JSON.stringify({ trade, template, audioPath: path }),
     })
 
     if (!woRes.ok) {
