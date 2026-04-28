@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import type { ReactElement } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Trade } from '@/lib/types'
@@ -77,7 +78,7 @@ const INDUSTRIES: {
   label: string
   descriptor: string
   accent: string
-  Icon: () => JSX.Element
+  Icon: () => ReactElement
 }[] = [
   { id: 'auto',          label: 'Automotive',      descriptor: 'Repair orders & diagnostics',  accent: '#06D6A0', Icon: WrenchIcon     },
   { id: 'hvac',          label: 'HVAC',             descriptor: 'Service tickets & inspections', accent: '#F5A623', Icon: WaveformIcon   },

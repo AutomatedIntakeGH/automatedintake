@@ -42,7 +42,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
           Automated<span className="text-[#06B6D4]">Intake</span>
         </h1>
         <div className="flex items-center gap-3">
-          <span className="text-slate-500 text-sm">{TRADE_LABELS[profile.trade] ?? profile.trade}</span>
+          <span className="text-slate-500 text-sm">{profile.trade ? (TRADE_LABELS[profile.trade] ?? profile.trade) : ''}</span>
           {plan === 'free' && (
             <Link href="/upgrade" className="text-xs px-2.5 py-1 rounded-full bg-[#06B6D4]/10 text-[#06B6D4] border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 transition-colors">
               Upgrade
@@ -92,7 +92,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
                 Tap Start, talk through the customer&apos;s concerns, then tap Stop.
               </p>
             </div>
-            <Recorder userId={user.id} trade={profile.trade} />
+            <Recorder userId={user.id} trade={profile.trade ?? 'auto'} />
           </>
         )}
 
